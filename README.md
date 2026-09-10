@@ -276,3 +276,5 @@ In /srv your file system should look like this
     ├── init.sls
     └── top.sls
 ```
+
+## Newest version you can use on debian based or rhel based salt minions
