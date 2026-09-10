@@ -1,5 +1,7 @@
 # Salt Service Deployment Lab
 
+## UPDATE: Newest version you can use on debian based or rhel based salt minions
+
 > A guide to deploying automated web services using SaltStack
 
 ## Project Overview
@@ -277,4 +279,3 @@ In /srv your file system should look like this
     └── top.sls
 ```
 
-## Newest version you can use on debian based or rhel based salt minions
