@@ -1,10 +1,11 @@
 {% set firewall = pillar.get('firewall', {}) %}
-{% set fw_service = firewall.get('service', 'firewalld') %}
 {% set fw_zone = firewall.get('zone', 'public') %}
+
+{% if grains['os_family'] == 'RedHat' %}
 
 firewalld_service:
   service.running:
-    - name: {{ fw_service }}
+    - name: firewalld
     - enable: True
 
 {% for port_group, ports in firewall.get('ports', {}).items() %}
@@ -18,3 +19,30 @@ firewalld_service:
     - require:
       - service: firewalld_service
 {% endfor %}
+
+{% elif grains['os_family'] == 'Debian' %}
+
+ufw_installed:
+  pkg.installed:
+    - name: ufw
+
+ufw_service:
+  service.running:
+    - name: ufw
+    - enable: True
+    - require:
+      - pkg: ufw_installed
+
+{% for port_group, ports in firewall.get('ports', {}).items() %}
+{% for port in ports %}
+{% set port_num, proto = port.split('/') %}
+{{ port_group }}_{{ port_num }}_{{ proto }}_ufw:
+  cmd.run:
+    - name: ufw allow {{ port_num }}/{{ proto }}
+    - unless: ufw status | grep -q "{{ port_num }}/{{ proto }}.*ALLOW"
+    - require:
+      - service: ufw_service
+{% endfor %}
+{% endfor %}
+
+{% endif %}
