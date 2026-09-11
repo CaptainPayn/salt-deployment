@@ -33,6 +33,13 @@ ufw_service:
     - require:
       - pkg: ufw_installed
 
+ufw_enabled:
+  cmd.run:
+    - name: ufw --force enable
+    - unless: '"ufw status | grep -q "Status: Active"'
+    - require:
+      - service: ufw_service
+
 {% for port_group, ports in firewall.get('ports', {}).items() %}
 {% for port in ports %}
 {% set port_num, proto = port.split('/') %}
