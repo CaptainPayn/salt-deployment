@@ -2,6 +2,8 @@ firewall:
   service: firewalld
   zone: public
   ports:
+    ssh:
+      - 22/tcp
     salt_minion:
       - 4505/tcp
       - 4506/tcp
