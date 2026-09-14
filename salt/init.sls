@@ -1,8 +1,5 @@
 {% set apache = pillar.get('apache', {}) %}
 
-include:
-  - firewall
-
 apache_install:
   pkg.installed:
     - name: {{ apache.get('package', 'httpd') }}
@@ -23,5 +20,7 @@ apache_index:
     - user: {{ apache.get('index', {}).get('user', 'root') }}
     - group: {{ apache.get('index', {}).get('group', 'root') }}
     - mode: {{ apache.get('index', {}).get('mode', '644') }}
+    - require:
+      - pkg: apache_install
     - defaults:
         minion_id: {{ grains['id'] }}

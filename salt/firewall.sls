@@ -36,7 +36,7 @@ ufw_service:
 ufw_enabled:
   cmd.run:
     - name: ufw --force enable
-    - unless: '"ufw status | grep -q "Status: Active"'
+    - unless: 'ufw status | grep -q "Status: active"'
     - require:
       - service: ufw_service
 
