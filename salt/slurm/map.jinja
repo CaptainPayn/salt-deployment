@@ -1,0 +1,16 @@
+{% set slurm = salt['grains.filter_by']({
+    'Debian': {
+        'pkgs': ['slurm-wlm', 'munge'],
+        'confdir': '/etc/slurm',
+        'slurmd_service': 'slurmd',
+        'slurmctld_service': 'slurmctld',
+        'munge_service': 'munge',
+    },
+    'RedHat': {
+        'pkgs': ['slurm', 'slurm-slurmd', 'munge'],
+        'confdir': '/etc/slurm',
+        'slurmd_service': 'slurmd',
+        'slurmctld_service': 'slurmctld',
+        'munge_service': 'munge',
+    },
+}, grain='os_family') %}

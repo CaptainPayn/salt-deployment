@@ -1,0 +1,33 @@
+ClusterName={{ pillar['slurm']['cluster_name'] }}
+SlurmctldHost={{ pillar['slurm']['controller'] }}
+
+MpiDefault=none
+ProctrackType=proctrack/linuxproc
+ReturnToService=1
+SlurmctldPidFile=/var/run/slurmctld.pid
+SlurmctldPort={{ pillar['slurm']['slurmctld_port'] }}
+SlurmdPidFile=/var/run/slurmd.pid
+SlurmdPort={{ pillar['slurm']['slurmd_port'] }}
+SlurmdSpoolDir=/var/spool/slurmd
+SlurmUser=slurm
+StateSaveLocation=/var/spool/slurmctld
+SwitchType=switch/none
+TaskPlugin=task/affinity
+
+# Scheduling
+SchedulerType=sched/backfill
+SelectType=select/cons_tres
+SelectTypeParameters=CR_core
+
+# Logging
+SlurmctldDebug=info
+SlurmctldLogFile=/var/log/slurm/slurmctld.log
+SlurmdDebug=info
+SlurmdLogFile=/var/log/slurm/slurmd.log
+
+# Compute Nodes
+{% for node in pillar['slurm']['nodes'] %}
+NodeName={{ node.name }} CPUs={{ node.cpus }} RealMemory={{ node.real_memory }} State=UNKNOWN
+{% endfor %}
+
+PartitionName={{ pillar['slurm']['partition_name'] }} Nodes=ALL Default=YES MaxTime=INFINITE State=UP
