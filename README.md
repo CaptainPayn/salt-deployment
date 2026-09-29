@@ -1,6 +1,7 @@
 # Salt Service Deployment Lab
 
 ## UPDATE: Newest version you can use on debian based or rhel based salt minions
+## UPDATE2: Added nfs and slurm
 
 > A guide to deploying automated web services using SaltStack
 
